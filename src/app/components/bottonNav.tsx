@@ -1,14 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
-import { Map, Compass, Bookmark, User } from "lucide-react";
 import { useState } from "react";
+import { navItems } from "../constants/dadosMock";
 
-const navItems = [
-  { id: 'mapa', label: 'Mapa', icon: Map },
-  { id: 'descobrir', label: 'Descobrir', icon: Compass },
-  { id: 'salvos', label: 'Salvos', icon: Bookmark },
-  { id: 'perfil', label: 'Perfil', icon: User },
-];
 
 export default function BottomNav() {
   const [activeTab, setActiveTab] = useState('mapa');

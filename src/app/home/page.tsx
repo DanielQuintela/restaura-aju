@@ -7,6 +7,9 @@ export default function HomePage() {
   const [showResults, setShowResults] = useState(false);
   const [search, setSearch] = useState("");
 
+  // POR ENQUANTO A TELA HOME ESTÁ COMO A TELA DO MAPA.
+  // O IDEAL ERA QUE ESSA TELA IMPORTASSE AS TELAS DO NAVBAR
+  
   return (
     <div className="relative h-screen w-full bg-gray-200 overflow-hidden">
       {/* MAPA MOCADO (Simulação visual) */}
