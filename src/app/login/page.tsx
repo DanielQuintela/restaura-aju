@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Store } from "lucide-react";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -85,7 +86,9 @@ export default function LoginPage() {
           </div>
 
           <button 
-            onClick={() => router.push('/cadastro')}
+          // TODO:DESATIVADO
+            // onClick={() => router.push('/cadastro')}
+            onClick={() => toast("🚧 Funcionalidade em desenvolvimento")}
             className="w-full bg-[#b45309] text-[#f2e9d9] py-4 rounded-2xl font-bold shadow-md hover:bg-[#92400e] active:scale-95 transition-all"
           >
             Cadastre-se!
