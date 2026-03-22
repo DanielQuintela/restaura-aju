@@ -43,7 +43,7 @@ export default function ExplorePage() {
       {/* HEADER */}
       <div className="px-6 pt-10 pb-2 flex justify-between items-center">
         <h2 className="text-3xl font-black tracking-tighter uppercase">
-          {view === "explore" ? "Conecta Centro" : "No Mapa"}
+          {view === "explore" ? "ConecCentro" : "No Mapa"}
         </h2>
         <div className="flex gap-2">
            <button 

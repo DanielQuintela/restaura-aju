@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Conecta Centro | Aracaju",
+  title: "ConecCentro | Aracaju",
   description: "Revitalize o centro de Aracaju. Descubra locais, ganhe pontos e apoie o comércio local.",
 };
 
