@@ -91,7 +91,7 @@ export default function ExplorePage() {
 
       <AnimatePresence mode="wait">
         {view === "explore" ? (
-          <motion.div key="list" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="px-6 mt-6 space-y-4">
+          <motion.div key="list" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}   className="px-6 mt-6 space-y-4 overflow-y-auto max-h-[calc(100vh-220px)] pb-28">
             {locaisFiltrados.length > 0 ? locaisFiltrados.map((local) => (
               <motion.div 
                 key={local.id} layout onClick={() => setSelectedPlace(local)}
