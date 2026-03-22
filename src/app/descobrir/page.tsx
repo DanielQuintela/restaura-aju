@@ -108,7 +108,7 @@ export default function ExplorePage() {
             {view === "explore" ? <MapPin size={20} /> : <Search size={20} />}
           </button>
           <div className="w-10 h-10 rounded-xl bg-white shadow-md border-2 border-[#b45309]/10 overflow-hidden">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Daniel" alt="User" />
           </div>
         </div>
       </div>

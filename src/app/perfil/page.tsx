@@ -4,8 +4,8 @@ import { MapPin, Trophy, Pencil, Bell, ShieldCheck, HelpCircle, LogOut, ChevronR
 import { useRouter } from "next/navigation";
 
 const PROFILE_DATA = {
-  name: "John Doe",
-  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix",
+  name: "João Silva",
+  avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Daniel",
   visitedPlaces: 12,
   points: 340,
 };
