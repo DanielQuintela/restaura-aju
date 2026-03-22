@@ -2,19 +2,53 @@
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { Store } from "lucide-react";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
 
+  const rows = Array.from({ length: 10 });
+  const cols = Array.from({ length: 6 });
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#f2e9d9] p-6 font-sans">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-[#f2e9d9] p-6 font-sans overflow-hidden">
+
+      {/* --- PADRONAGEM (FUNDO) --- */}
+      <div className="absolute inset-0 z-0 flex flex-col justify-around opacity-15 pointer-events-none mix-blend-multiply py-6">
+        {rows.map((_, rowIndex) => (
+          <div key={rowIndex} className="flex justify-around w-full px-2">
+            {cols.map((_, colIndex) => {
+              const isCaju = (rowIndex + colIndex) % 2 === 0;
+              return (
+                <motion.div 
+                  key={colIndex} 
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: (rowIndex + colIndex) * 0.03 }}
+                  className="relative w-20 h-20 md:w-28 md:h-28"
+                >
+                  <Image
+                    src={isCaju ? "/caju.png" : "/caranguejo.png"}
+                    alt="ícone cultural"
+                    fill
+                    sizes="(max-width: 768px) 80px, 112px"
+                    className="object-contain p-1"
+                  />
+                </motion.div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+
+      {/* --- CONTEÚDO PRINCIPAL --- */}
       <motion.div 
         initial={{ opacity: 0, scale: 0.9 }} 
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-sm bg-[#f2e9d9]/80 backdrop-blur-md p-8 rounded-[32px] shadow-xl border border-white/40"
+        className="relative z-10 w-full max-w-sm bg-[#f2e9d9]/80 backdrop-blur-md p-8 rounded-[32px] shadow-xl border border-white/40"
       >
         <h2 className="text-3xl font-bold mb-2 text-[#51433a]">
-          E aí, pronto? 👋
+          Fico feliz em vê-lo novamente!😊👋
         </h2>
 
         <p className="text-[#51433a]/70 mb-8 text-sm">
@@ -43,8 +77,25 @@ export default function LoginPage() {
           </button>
 
           <div className="relative flex items-center my-2">
+            <div className="flex-1 border-t border-[#51433a]/20" />
+            <span className="px-3 text-[10px] font-black uppercase tracking-widest text-[#51433a]/90">
+              É novo por aqui? 🧐 Cadastre-se agora! 😊
+            </span>
             <div className="flex-1 border-t border-[#51433a]/15" />
-            <span className="px-3 text-[10px] font-black uppercase tracking-widest text-[#51433a]/40">ou</span>
+          </div>
+
+          <button 
+            onClick={() => router.push('/cadastro')}
+            className="w-full bg-[#b45309] text-[#f2e9d9] py-4 rounded-2xl font-bold shadow-md hover:bg-[#92400e] active:scale-95 transition-all"
+          >
+            Cadastre-se!
+          </button>
+
+          <div className="relative flex items-center my-2">
+            <div className="flex-1 border-t border-[#51433a]/15" />
+            <span className="px-3 text-[10px] font-black uppercase tracking-widest text-[#51433a]/90">
+              ou
+            </span>
             <div className="flex-1 border-t border-[#51433a]/15" />
           </div>
 
