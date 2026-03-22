@@ -1,5 +1,13 @@
 import type { LucideIcon } from "lucide-react";
 
+export interface Address {
+  street: string;
+  number: string;
+  neighborhood: "Centro";
+  city: "Aracaju";
+  state: "SE";
+}
+
 export interface LocalDescobrir {
   id: number;
   nome: string;
@@ -11,6 +19,7 @@ export interface LocalDescobrir {
   dist: string;
   coords: { top: string; left: string };
   img: string;
+  address: Address;
 }
 
 export interface Coupon {
