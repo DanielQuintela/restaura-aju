@@ -123,7 +123,7 @@ export default function MapaCentro() {
           ) : (
             <>
               <div className="h-6 w-[1px] bg-zinc-200 mx-3" />
-              <MapPin size={18} className="text-indigo-500" />
+              <MapPin size={18} className="text-[#b45309]" />
             </>
           )}
         </div>
