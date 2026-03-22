@@ -1,11 +1,19 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Navigation, Target, MapPin, X } from 'lucide-react';
-import { LOCAIS_ARACAJU } from '../constants/dadosMock';
+import { Search, Navigation, Target, MapPin, X, Clock, Star } from 'lucide-react';
+import { LOCAIS_ARACAJU, LOCAIS_DESCOBRIR } from '../constants/dadosMock';
 
+type SearchResult = {
+  id: string;
+  name: string;
+  category: string;
+  image: string;
+  extra: string;
+  mapaIdx: number | null;
+};
 
 export default function MapaCentro() {
   const [selectedIdx, setSelectedIdx] = useState(0);
@@ -14,12 +22,52 @@ export default function MapaCentro() {
 
   const isSearching = searchTerm.trim().length > 0;
 
+  const searchResults = useMemo<SearchResult[]>(() => {
+    if (!isSearching) return [];
+    const q = searchTerm.toLowerCase();
+
+    const fromMapa: SearchResult[] = LOCAIS_ARACAJU
+      .map((l, i) => ({
+        id: `mapa-${i}`,
+        name: l.name,
+        category: l.category,
+        image: l.image,
+        extra: `${l.address.street}, ${l.address.number}`,
+        mapaIdx: i,
+      }))
+      .filter(r => r.name.toLowerCase().includes(q) || r.category.toLowerCase().includes(q));
+
+    const mapaNames = new Set(fromMapa.map(r => r.name.toLowerCase()));
+
+    const fromDescobrir: SearchResult[] = LOCAIS_DESCOBRIR
+      .filter(l => !mapaNames.has(l.nome.toLowerCase()))
+      .filter(l => l.nome.toLowerCase().includes(q) || l.tipo.toLowerCase().includes(q) || l.caracteristicas.toLowerCase().includes(q))
+      .map(l => ({
+        id: `desc-${l.id}`,
+        name: l.nome,
+        category: l.tipo,
+        image: l.img,
+        extra: `${l.dist} · ${l.nota} ★`,
+        mapaIdx: null,
+      }));
+
+    return [...fromMapa, ...fromDescobrir];
+  }, [searchTerm, isSearching]);
+
   const localAtual = LOCAIS_ARACAJU[selectedIdx];
   const addr = localAtual.address;
 
   const googleMapsUrl = `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(
     `${localAtual.name}, ${addr.street}, ${addr.city}, ${addr.state}`
   )}`;
+
+  const handleSelectResult = (result: SearchResult) => {
+    if (result.mapaIdx !== null) {
+      setSelectedIdx(result.mapaIdx);
+    }
+    setSearchTerm("");
+    setShowSuggestions(true);
+  };
 
   return (
     <div className="relative h-screen w-full bg-[#FDF8F4] overflow-hidden">
@@ -74,6 +122,56 @@ export default function MapaCentro() {
             </>
           )}
         </div>
+
+        {/* RESULTADOS DA BUSCA */}
+        <AnimatePresence>
+          {isSearching && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              className="mt-3 bg-white/95 backdrop-blur-xl rounded-[24px] shadow-xl border border-zinc-100 overflow-hidden max-h-[60vh] overflow-y-auto"
+            >
+              {searchResults.length > 0 ? (
+                <div className="divide-y divide-zinc-100">
+                  <div className="px-4 py-2">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-[#51433a]/40">
+                      {searchResults.length} {searchResults.length === 1 ? "resultado" : "resultados"}
+                    </span>
+                  </div>
+                  {searchResults.map((result) => (
+                    <button
+                      key={result.id}
+                      onClick={() => handleSelectResult(result)}
+                      className="w-full flex items-center gap-3 px-4 py-3 active:bg-[#b45309]/5 transition-colors"
+                    >
+                      <div className="w-12 h-12 rounded-2xl overflow-hidden shrink-0 relative">
+                        <Image src={result.image} alt={result.name} fill sizes="48px" className="object-cover" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <p className="text-sm font-bold text-[#51433a] leading-tight">{result.name}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-[9px] font-black uppercase tracking-wider text-[#b45309]">{result.category}</span>
+                          <span className="text-[9px] font-bold text-[#51433a]/40">{result.extra}</span>
+                        </div>
+                      </div>
+                      {result.mapaIdx !== null && (
+                        <MapPin size={16} className="text-[#b45309] shrink-0" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-10 text-center">
+                  <Search size={24} className="text-[#51433a]/15 mx-auto mb-2" />
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#51433a]/30">
+                    Nenhum resultado para &ldquo;{searchTerm}&rdquo;
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* BOTÕES LATERAIS */}
