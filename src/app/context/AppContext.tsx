@@ -22,7 +22,7 @@ interface AppContextType {
   toast: string | null;
   toggleFavorite: (id: number) => void;
   checkIn: (id: number) => void;
-  redeemCoupon: (id: number) => void;
+  redeemCoupon: (id: string) => void;
 }
 
 const AppContext = createContext<AppContextType>({
@@ -58,7 +58,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
         if (data.favorites) setFavorites(data.favorites);
         if (data.visitedPlaceIds) setVisitedPlaceIds(data.visitedPlaceIds);
         if (typeof data.points === "number") setPoints(data.points);
-        if (data.coupons) setCoupons(data.coupons);
+        if (data.coupons) {
+          const seen = new Set<string>();
+          const deduped = (data.coupons as Array<{ id: unknown; title: string; discount: string; redeemed: boolean }>)
+            .map(c => ({ ...c, id: String(c.id) }))
+            .filter(c => { if (seen.has(c.id)) return false; seen.add(c.id); return true; });
+          setCoupons(deduped);
+        }
       }
     } catch { /* ignore */ }
     setHydrated(true);
@@ -93,7 +99,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         if (Math.floor(np / POINTS_PER_COUPON) > Math.floor(pp / POINTS_PER_COUPON)) {
           setCoupons(cc => {
             const tpl = COUPON_TEMPLATES[cc.length % COUPON_TEMPLATES.length];
-            return [...cc, { id: Date.now(), title: tpl.title, discount: tpl.discount, redeemed: false }];
+            return [...cc, { id: crypto.randomUUID(), title: tpl.title, discount: tpl.discount, redeemed: false }];
           });
           showToast(`+${POINTS_PER_CHECKIN} pts! 🎉 Cupom desbloqueado!`);
         } else {
@@ -106,7 +112,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     });
   }, [showToast]);
 
-  const redeemCoupon = useCallback((id: number) => {
+  const redeemCoupon = useCallback((id: string) => {
     setCoupons(prev => prev.map(c => c.id === id ? { ...c, redeemed: true } : c));
     showToast("Cupom resgatado com sucesso!");
   }, [showToast]);
