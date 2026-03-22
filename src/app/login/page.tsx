@@ -14,7 +14,7 @@ export default function LoginPage() {
         className="w-full max-w-sm bg-[#f2e9d9]/80 backdrop-blur-md p-8 rounded-[32px] shadow-xl border border-white/40"
       >
         <h2 className="text-3xl font-bold mb-2 text-[#51433a]">
-          E aí, pronto? 👋
+          Fico feliz em vê-lo novamente!😊👋
         </h2>
 
         <p className="text-[#51433a]/70 mb-8 text-sm">
@@ -43,8 +43,21 @@ export default function LoginPage() {
           </button>
 
           <div className="relative flex items-center my-2">
+            <div className="flex-1 border-t border-[#51433a]/20" />
+            <span className="px-3 text-[10px] font-black uppercase tracking-widest text-[#51433a]/90">É novo por aqui? 🧐 Cadastre-se agora! 😊</span>
             <div className="flex-1 border-t border-[#51433a]/15" />
-            <span className="px-3 text-[10px] font-black uppercase tracking-widest text-[#51433a]/40">ou</span>
+          </div>
+
+           <button 
+            onClick={() => router.push('/cadastro')}
+            className="w-full bg-[#b45309] text-[#f2e9d9] py-4 rounded-2xl font-bold shadow-md hover:bg-[#92400e] active:scale-95 transition-all"
+          >
+            Cadastre-se!
+          </button>
+
+          <div className="relative flex items-center my-2">
+            <div className="flex-1 border-t border-[#51433a]/15" />
+            <span className="px-3 text-[10px] font-black uppercase tracking-widest text-[#51433a]/90">ou</span>
             <div className="flex-1 border-t border-[#51433a]/15" />
           </div>
 
