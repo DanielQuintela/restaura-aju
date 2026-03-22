@@ -1,14 +1,14 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, MapPin, Star, Clock, X, Info, Navigation, Heart, ChevronLeft, Utensils, ShoppingBag, Landmark } from "lucide-react";
+import { Search, MapPin, Star, Clock, X, Info, Navigation, Utensils, ShoppingBag, Landmark, Heart } from "lucide-react";
 import { useState, useMemo } from "react";
 
 export default function ExplorePage() {
-  const [view, setView] = useState("explore"); // 'explore', 'map', 'favorites'
+  const [view, setView] = useState("explore"); // 'explore' ou 'map'
   const [activeTab, setActiveTab] = useState("Tudo");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPlace, setSelectedPlace] = useState(null);
-  const [favorites, setFavorites] = useState([1]);
+  const [favorites, setFavorites] = useState([1]); // Começa com o Mercado favorito
 
   const todosLocais = [
     { 
@@ -61,38 +61,55 @@ export default function ExplorePage() {
     }
   ];
 
-  // FILTRO MESTRE: Busca + Categoria + Favoritos
+  // FILTRO MESTRE: Busca + Categoria + Lógica de Favoritos
   const locaisFiltrados = useMemo(() => {
     return todosLocais.filter(local => {
       const matchesSearch = local.nome.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      // Se a aba ativa for 'Favoritos', filtra pelo array de favoritos
+      if (activeTab === "Favoritos") {
+        return matchesSearch && favorites.includes(local.id);
+      }
+      
       const matchesTab = activeTab === "Tudo" || local.tipo === activeTab;
-      const matchesFavorite = view === "favorites" ? favorites.includes(local.id) : true;
-      return matchesSearch && matchesTab && matchesFavorite;
+      return matchesSearch && matchesTab;
     });
-  }, [searchQuery, activeTab, view, favorites]);
+  }, [searchQuery, activeTab, favorites]);
 
   const toggleFavorite = (id, e) => {
     e.stopPropagation();
-    setFavorites(prev => prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]);
+    setFavorites(prev => 
+      prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
+    );
   };
 
+  // CATEGORIAS: Adicionada a categoria "Favoritos" com ícone de Estrela
   const categorias = [
     { id: "Tudo", icon: null },
+    { id: "Favoritos", icon: <Star size={14} fill="currentColor" /> },
     { id: "Gastronomia", icon: <Utensils size={14} /> },
     { id: "Lojas", icon: <ShoppingBag size={14} /> },
     { id: "Cultura", icon: <Landmark size={14} /> }
   ];
 
   return (
-    <div className="min-h-screen bg-[#f2e9d9] text-[#51433a] pb-28 font-sans">
+    <div className="min-h-screen bg-[#f2e9d9] text-[#51433a] pb-10 font-sans">
       
       {/* HEADER */}
       <div className="px-6 pt-10 pb-2 flex justify-between items-center">
         <h2 className="text-3xl font-black tracking-tighter uppercase">
-          {view === "explore" ? "Descubra" : view === "map" ? "No Mapa" : "Favoritos"}
+          {view === "explore" ? "Conecta Centro" : "No Mapa"}
         </h2>
-        <div className="w-10 h-10 rounded-xl bg-white shadow-md border-2 border-[#b45309]/10 overflow-hidden">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
+        <div className="flex gap-2">
+           <button 
+            onClick={() => setView(view === "explore" ? "map" : "explore")}
+            className="bg-white p-2 rounded-xl shadow-sm border border-[#b45309]/20 text-[#b45309]"
+          >
+            {view === "explore" ? <MapPin size={20} /> : <Search size={20} />}
+          </button>
+          <div className="w-10 h-10 rounded-xl bg-white shadow-md border-2 border-[#b45309]/10 overflow-hidden">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
+          </div>
         </div>
       </div>
 
@@ -108,7 +125,7 @@ export default function ExplorePage() {
         </div>
       </div>
 
-      {/* BOTÕES DE CATEGORIA (SEMPRE VISÍVEIS) */}
+      {/* CATEGORIAS (Favoritos agora aparece aqui!) */}
       <div className="flex gap-3 overflow-x-auto px-6 py-2 no-scrollbar">
         {categorias.map((cat) => (
           <button
@@ -127,13 +144,12 @@ export default function ExplorePage() {
       </div>
 
       <AnimatePresence mode="wait">
-        {view !== "map" ? (
-          /* VIEW: LISTA */
+        {view === "explore" ? (
           <motion.div key="list" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="px-6 mt-6 space-y-4">
             {locaisFiltrados.length > 0 ? locaisFiltrados.map((local) => (
               <motion.div 
                 key={local.id} layout onClick={() => setSelectedPlace(local)}
-                className="bg-white/80 rounded-[30px] p-3 flex gap-4 border border-white shadow-md relative"
+                className="bg-white/80 rounded-[30px] p-3 flex gap-4 border border-white shadow-md relative active:scale-95 transition-transform"
               >
                 <img src={local.img} className="w-24 h-24 rounded-[22px] object-cover" />
                 <div className="flex flex-col justify-between py-1 flex-grow pr-8">
@@ -143,15 +159,25 @@ export default function ExplorePage() {
                   </div>
                   <div className="flex items-center justify-between text-[10px] font-bold opacity-60">
                     <div className="flex items-center gap-1"><Clock size={12}/> {local.dist}</div>
-                    <div className="flex items-center gap-1"><Star size={12} fill="#EAB308" className="text-yellow-500"/> {local.nota}</div>
+                    <div className="text-[#b45309] font-black">{local.nota} ★</div>
                   </div>
                 </div>
-                <button onClick={(e) => toggleFavorite(local.id, e)} className="absolute top-4 right-4 p-2">
-                  <Star size={20} fill={favorites.includes(local.id) ? "#b45309" : "transparent"} className={favorites.includes(local.id) ? "text-[#b45309]" : "text-[#51433a]/20"} />
+                {/* ÍCONE DE FAVORITAR NO CARD */}
+                <button 
+                  onClick={(e) => toggleFavorite(local.id, e)}
+                  className="absolute top-4 right-4 p-2 transition-transform active:scale-125"
+                >
+                  <Star 
+                    size={22} 
+                    fill={favorites.includes(local.id) ? "#b45309" : "none"} 
+                    className={favorites.includes(local.id) ? "text-[#b45309]" : "text-[#51433a]/20"} 
+                  />
                 </button>
               </motion.div>
             )) : (
-              <div className="text-center py-20 opacity-30 font-black uppercase text-[10px] tracking-widest">Nada nesta categoria</div>
+              <div className="text-center py-20 opacity-30 font-black uppercase text-[10px] tracking-widest leading-relaxed">
+                {activeTab === "Favoritos" ? "Você ainda não salvou\nnenhum local favorito" : "Nada encontrado"}
+              </div>
             )}
           </motion.div>
         ) : (
@@ -169,10 +195,6 @@ export default function ExplorePage() {
                   <MapPin size={22} fill="currentColor" className="text-white" />
                 </motion.button>
               ))}
-              <div className="absolute bottom-6 left-6 right-6 bg-[#51433a] p-4 rounded-2xl text-white shadow-2xl">
-                <p className="text-[9px] font-black uppercase opacity-60">Filtro Ativo</p>
-                <p className="text-xs font-bold">Mostrando {locaisFiltrados.length} locais em {activeTab}</p>
-              </div>
             </div>
           </motion.div>
         )}
@@ -199,3 +221,7 @@ export default function ExplorePage() {
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
