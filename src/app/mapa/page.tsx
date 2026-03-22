@@ -28,7 +28,7 @@ export default function MapaCentro() {
     <div className="relative h-screen w-full bg-[#FDF8F4] overflow-hidden">
       
       {/* MAPA */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      <div className="absolute inset-0 z-0">
         {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ? (
           <iframe 
             src={googleMapsUrl} 
