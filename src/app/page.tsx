@@ -48,7 +48,7 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl sm:text-5xl font-black mb-4 leading-tight tracking-tight text-[#51433a] drop-shadow-sm"
         >
-          Conecta <span className="text-[#b45309]">Centro</span>
+          Conec<span className="text-[#b45309]">Centro</span>
         </motion.h1>
 
         <p className="text-[#51433a] text-lg mb-6 font-bold opacity-90">
