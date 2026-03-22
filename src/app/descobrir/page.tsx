@@ -1,6 +1,6 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, MapPin, Star, Clock, X, Info, Utensils, ShoppingBag, Landmark, CheckCircle } from "lucide-react";
+import { Search, MapPin, Star, Clock, X, Info, Utensils, ShoppingBag, Landmark, CheckCircle, Clapperboard } from "lucide-react";
 import { useState, useMemo } from "react";
 import { useApp } from "../context/AppContext";
 import { LOCAIS_DESCOBRIR } from "../constants/dadosMock";
@@ -34,7 +34,8 @@ export default function ExplorePage() {
     { id: "Favoritos", icon: <Star size={14} fill="currentColor" /> },
     { id: "Gastronomia", icon: <Utensils size={14} /> },
     { id: "Lojas", icon: <ShoppingBag size={14} /> },
-    { id: "Cultura", icon: <Landmark size={14} /> }
+    { id: "Cultura", icon: <Landmark size={14} /> },
+    { id: "Cinema", icon: <Clapperboard size={14} /> },
   ];
 
   return (
