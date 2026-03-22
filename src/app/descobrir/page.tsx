@@ -199,19 +199,6 @@ export default function ExplorePage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* TAB BAR (MENU INFERIOR) */}
-      <nav className="fixed bottom-6 left-6 right-6 h-20 bg-[#51433a] rounded-[30px] shadow-2xl flex items-center justify-around px-4 z-50">
-        <button onClick={() => setView("explore")} className={`p-3 rounded-2xl transition-all ${view === "explore" ? "text-[#b45309] bg-[#f2e9d9] scale-110 shadow-lg" : "text-white/40"}`}>
-          <Search size={24} />
-        </button>
-        <button onClick={() => setView("map")} className={`p-3 rounded-2xl transition-all ${view === "map" ? "text-[#b45309] bg-[#f2e9d9] scale-110 shadow-lg" : "text-white/40"}`}>
-          <MapPin size={24} />
-        </button>
-        <button onClick={() => setView("favorites")} className={`p-3 rounded-2xl transition-all ${view === "favorites" ? "text-[#b45309] bg-[#f2e9d9] scale-110 shadow-lg" : "text-white/40"}`}>
-          <Star size={24} />
-        </button>
-      </nav>
     </div>
   );
 }
