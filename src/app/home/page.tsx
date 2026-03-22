@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import MapaCentro from '../mapa/page';
 import BottomNav from '../components/bottonNav';
+import ExplorePage from '../descobrir/page';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('mapa');
@@ -12,7 +13,8 @@ export default function Home() {
       case 'mapa':
         return <MapaCentro />;
       case 'descobrir':
-        return <div>Descobrir</div>;
+        return <ExplorePage/>;
+
       case 'salvos':
         return <div>Salvos</div>;
       case 'perfil':
