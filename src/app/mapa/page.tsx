@@ -28,7 +28,7 @@ export default function MapaCentro() {
     <div className="relative h-screen w-full bg-[#FDF8F4] overflow-hidden">
       
       {/* MAPA */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-auto">
         {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ? (
           <iframe 
             src={googleMapsUrl} 
@@ -36,7 +36,7 @@ export default function MapaCentro() {
             height="100%" 
             style={{ 
               border: 0,
-              filter: 'brightness(0.9) contrast(1.2) saturate(1.2)'
+              filter: 'grayscale(0.3) sepia(0.2) contrast(1.1) brightness(0.9)'
             }} 
             loading="eager"
           />
