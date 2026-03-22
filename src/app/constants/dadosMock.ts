@@ -9,7 +9,6 @@ export const STORES_MOCK = [
 export const navItems = [
   { id: 'mapa', label: 'Mapa', icon: Map },
   { id: 'descobrir', label: 'Descobrir', icon: Compass },
-  { id: 'salvos', label: 'Salvos', icon: Bookmark },
   { id: 'perfil', label: 'Perfil', icon: User },
 ];
 
