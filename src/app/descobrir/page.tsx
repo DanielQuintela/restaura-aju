@@ -33,7 +33,7 @@ export default function ExplorePage() {
       nota: 5.0, 
       dist: "800m",
       coords: { top: "55%", left: "25%" },
-      img: "https://images.unsplash.com/photo-1518998053502-53cc8efd9aed?auto=format&fit=crop&w=400"
+      img: "/museuSergipana.jpg"
     },
     { 
       id: 4, 
@@ -199,6 +199,3 @@ export default function ExplorePage() {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
-  );
-}
