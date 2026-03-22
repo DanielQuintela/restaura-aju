@@ -4,11 +4,12 @@ import { Typewriter } from "react-simple-typewriter";
 import Link from "next/link";
 import Image from "next/image";
 
+
 export default function LandingPage() {
   return (
-    <div className="relative w-full flex flex-col items-center min-h-screen bg-black overflow-hidden">
+    <div className="relative w-full flex flex-col items-center min-h-screen bg-gray-200 overflow-hidden">
       <div className="relative w-[95vw] mt-6 h-[80vh] rounded-[40px] overflow-hidden border border-white/10 shadow-2xl">
-        <Image src="/centro-city.jpeg" alt="Centro" fill className="object-cover brightness-50" />
+        {/* <Image src="/centro.jpg" alt="Centro" fill className="object-cover brightness-50" /> */}
       </div>
 
       <main className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white px-6">
@@ -17,7 +18,10 @@ export default function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-4xl md:text-6xl font-black text-center mb-4"
         >
-          Conecta<span className="text-indigo-500">Centro</span>
+          <div>
+            <span className="text-gray-700">Conecta</span> <span className="text-amber-700">Centro</span>
+          </div>
+         
         </motion.h1>
         
         <div className="h-12 text-xl text-zinc-300 font-light">
