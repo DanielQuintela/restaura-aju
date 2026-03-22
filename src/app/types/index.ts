@@ -18,6 +18,14 @@ export interface Coupon {
   title: string;
   discount: string;
   redeemed: boolean;
+  type?: "coupon" | "ticket";
+}
+
+export interface CinemaTicketOption {
+  id: string;
+  title: string;
+  cost: number;
+  description: string;
 }
 
 export interface NavItem {

@@ -1,5 +1,5 @@
 import { Map, Compass, Bookmark, User } from "lucide-react";
-import type { LocalDescobrir, NavItem } from "../types";
+import type { CinemaTicketOption, LocalDescobrir, NavItem } from "../types";
 
 export const STORES_MOCK = [
   { id: 1, name: "Sneakers Retro", product: "Jordan 4 Blue", coords: "Rua Direita, 120", tags: ["Moda", "Jovem"] },
@@ -39,6 +39,12 @@ export const LOCAIS_ARACAJU = [
     category: "Museu",
     image: "/campos.jpg",
     address: { street: "Praça Fausto Cardoso", number: "s/n", neighborhood: "Centro", city: "Aracaju", state: "SE" }
+  },
+  {
+    name: "Cine Walmir Almeida",
+    category: "Cinema",
+    image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=400",
+    address: { street: "Rua Itabaianinha", number: "35", neighborhood: "Centro", city: "Aracaju", state: "SE" }
   }
 ];
 
@@ -90,5 +96,23 @@ export const LOCAIS_DESCOBRIR: LocalDescobrir[] = [
     dist: "100m",
     coords: { top: "45%", left: "60%" },
     img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=400"
+  },
+  {
+    id: 5,
+    nome: "Cine Walmir Almeida",
+    tipo: "Cinema",
+    status: "Aberto",
+    horario: "14h às 22h",
+    caracteristicas: "Cinema histórico no coração do centro, com filmes nacionais e clássicos do cinema brasileiro.",
+    nota: 4.8,
+    dist: "300m",
+    coords: { top: "20%", left: "70%" },
+    img: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=400"
   }
+];
+
+export const CINEMA_TICKET_OPTIONS: CinemaTicketOption[] = [
+  { id: "ticket-meia", title: "Meia-Entrada – Cine Walmir Almeida", cost: 150, description: "Ingresso meia-entrada para qualquer sessão" },
+  { id: "ticket-inteira", title: "Ingresso Inteira – Cine Walmir Almeida", cost: 200, description: "Ingresso inteira para qualquer sessão" },
+  { id: "ticket-combo", title: "Ingresso + Pipoca – Cine Walmir Almeida", cost: 300, description: "Ingresso inteira + combo de pipoca e refrigerante" },
 ];

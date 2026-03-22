@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useState, useEffect, useCallback, useRef, type ReactNode } from "react";
-import type { Coupon } from "../types";
+import type { Coupon, CinemaTicketOption } from "../types";
 
 const STORAGE_KEY = "conecta-centro-data";
 const POINTS_PER_CHECKIN = 50;
@@ -12,6 +12,7 @@ const COUPON_TEMPLATES = [
   { title: "R$5 off no Restaurante Caçarola", discount: "R$5" },
   { title: "15% em artesanato local", discount: "15%" },
   { title: "Sobremesa grátis no almoço", discount: "Grátis" },
+  { title: "Desconto no Cine Walmir Almeida", discount: "10%" },
 ];
 
 interface AppContextType {
@@ -23,6 +24,7 @@ interface AppContextType {
   toggleFavorite: (id: number) => void;
   checkIn: (id: number) => void;
   redeemCoupon: (id: string) => void;
+  redeemTicket: (option: CinemaTicketOption) => void;
 }
 
 const AppContext = createContext<AppContextType>({
@@ -34,6 +36,7 @@ const AppContext = createContext<AppContextType>({
   toggleFavorite: () => {},
   checkIn: () => {},
   redeemCoupon: () => {},
+  redeemTicket: () => {},
 });
 
 export function useApp() {
@@ -117,8 +120,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
     showToast("Cupom resgatado com sucesso!");
   }, [showToast]);
 
+  const redeemTicket = useCallback((option: CinemaTicketOption) => {
+    setPoints(prev => {
+      if (prev < option.cost) {
+        showToast("Pontos insuficientes 🎯");
+        return prev;
+      }
+      setCoupons(cc => [...cc, {
+        id: crypto.randomUUID(),
+        title: option.title,
+        discount: "Ingresso",
+        redeemed: false,
+        type: "ticket" as const,
+      }]);
+      showToast("Ingresso resgatado! 🎬");
+      return prev - option.cost;
+    });
+  }, [showToast]);
+
   return (
-    <AppContext.Provider value={{ favorites, visitedPlaceIds, points, coupons, toast, toggleFavorite, checkIn, redeemCoupon }}>
+    <AppContext.Provider value={{ favorites, visitedPlaceIds, points, coupons, toast, toggleFavorite, checkIn, redeemCoupon, redeemTicket }}>
       {children}
     </AppContext.Provider>
   );

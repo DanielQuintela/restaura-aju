@@ -1,8 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
-import { MapPin, Trophy, Pencil, Bell, ShieldCheck, HelpCircle, LogOut, ChevronRight, Ticket, Gift } from "lucide-react";
+import { MapPin, Trophy, Pencil, Bell, ShieldCheck, HelpCircle, LogOut, ChevronRight, Ticket, Gift, Clapperboard } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useApp } from "../context/AppContext";
+import { CINEMA_TICKET_OPTIONS } from "../constants/dadosMock";
 
 const PROFILE_DATA = {
   name: "João Silva",
@@ -18,7 +19,7 @@ const SETTINGS_ITEMS = [
 
 export default function ProfilePage() {
   const router = useRouter();
-  const { points, visitedPlaceIds, coupons, redeemCoupon } = useApp();
+  const { points, visitedPlaceIds, coupons, redeemCoupon, redeemTicket } = useApp();
 
   return (
     <div className="min-h-screen bg-[#f2e9d9] text-[#51433a] pb-32 font-sans">
@@ -59,6 +60,50 @@ export default function ProfilePage() {
         </div>
       </motion.div>
 
+      {/* INGRESSOS DE CINEMA */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="px-6 mt-8"
+      >
+        <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3">Ingressos de Cinema</p>
+        <div className="bg-[#51433a]/5 rounded-[20px] px-4 py-3 mb-3 flex items-center gap-2 border border-[#51433a]/10">
+          <Clapperboard size={16} className="text-[#b45309] shrink-0" />
+          <p className="text-[10px] font-bold opacity-60">Use seus pontos para resgatar ingressos do Cine Walmir Almeida.</p>
+        </div>
+        <div className="space-y-3">
+          {CINEMA_TICKET_OPTIONS.map((opt) => {
+            const canAfford = points >= opt.cost;
+            return (
+              <div key={opt.id} className="bg-white/80 rounded-[20px] p-4 border border-white shadow-md flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-[#b45309]/10 flex items-center justify-center shrink-0">
+                  <Clapperboard size={22} className="text-[#b45309]" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-bold leading-tight">{opt.title}</p>
+                  <p className="text-[10px] font-black uppercase tracking-wider opacity-40 mt-0.5">{opt.description}</p>
+                  <p className={`text-[10px] font-black uppercase tracking-wider mt-1 ${canAfford ? "text-[#b45309]" : "text-gray-400"}`}>
+                    {opt.cost} pts
+                  </p>
+                </div>
+                <button
+                  onClick={() => redeemTicket(opt)}
+                  disabled={!canAfford}
+                  className={`text-[10px] font-black uppercase px-3 py-2 rounded-xl active:scale-95 transition-all ${
+                    canAfford
+                      ? "bg-[#b45309] text-white"
+                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  }`}
+                >
+                  Resgatar
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
+
       {/* RECOMPENSAS */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -73,7 +118,11 @@ export default function ProfilePage() {
             {coupons.map((coupon) => (
               <div key={coupon.id} className="bg-white/80 rounded-[20px] p-4 border border-white shadow-md flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${coupon.redeemed ? "bg-gray-100" : "bg-[#b45309]/10"}`}>
-                  <Ticket size={22} className={coupon.redeemed ? "text-gray-400" : "text-[#b45309]"} />
+                  {coupon.type === "ticket" ? (
+                    <Clapperboard size={22} className={coupon.redeemed ? "text-gray-400" : "text-[#b45309]"} />
+                  ) : (
+                    <Ticket size={22} className={coupon.redeemed ? "text-gray-400" : "text-[#b45309]"} />
+                  )}
                 </div>
                 <div className="flex-1">
                   <p className={`text-sm font-bold ${coupon.redeemed ? "line-through opacity-40" : ""}`}>{coupon.title}</p>
