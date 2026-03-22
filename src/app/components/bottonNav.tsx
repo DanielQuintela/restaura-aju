@@ -29,12 +29,12 @@ export default function BottomNav({ activeTab, setActiveTab }: Navbar) {
               <Icon 
                 size={22} 
                 className={`transition-colors duration-300 ${
-                  isActive ? 'text-indigo-600' : 'text-gray-400'
+                  isActive ? 'text-[#b45309]' : 'text-gray-400'
                 }`} 
               />
 
               <span className={`text-[10px] font-bold ${
-                isActive ? 'text-indigo-600' : 'text-gray-400'
+                isActive ? 'text-[#b45309]' : 'text-gray-400'
               }`}>
                 {item.label}
               </span>
@@ -42,7 +42,7 @@ export default function BottomNav({ activeTab, setActiveTab }: Navbar) {
               {isActive && (
                 <motion.div 
                   layoutId="activeDot"
-                  className="absolute -bottom-1 w-1 h-1 bg-indigo-600 rounded-full"
+                  className="absolute -bottom-1 w-1 h-1 bg-[#b45309] rounded-full"
                 />
               )}
             </button>
