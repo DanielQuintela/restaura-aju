@@ -12,3 +12,31 @@ export const navItems = [
   { id: 'salvos', label: 'Salvos', icon: Bookmark },
   { id: 'perfil', label: 'Perfil', icon: User },
 ];
+
+
+export const LOCAIS_ARACAJU = [
+  {
+    name: "Mercado Central",
+    category: "Comércio",
+    image: "/mercado.jpg",
+    address: { street: "Av. Coelho e Campos", number: "s/n", neighborhood: "Centro", city: "Aracaju", state: "SE" }
+  },
+  {
+    name: "Museu da Gente Sergipana",
+    category: "Cultura",
+    image: "/museuSergipana.jpg",
+    address: { street: "Av. Ivo do Prado", number: "398", neighborhood: "Centro", city: "Aracaju", state: "SE" }
+  },
+  {
+    name: "Praça Fausto Cardoso",
+    category: "Praça",
+    image: "/faustoCardoso.jpg",
+    address: { street: "Av. Ivo do Prado", number: "s/n", neighborhood: "Centro", city: "Aracaju", state: "SE" }
+  },
+  {
+    name: "Palácio Museu Olímpio Campos",
+    category: "Museu",
+    image: "/campos.jpg",
+    address: { street: "Praça Fausto Cardoso", number: "s/n", neighborhood: "Centro", city: "Aracaju", state: "SE" }
+  }
+];
