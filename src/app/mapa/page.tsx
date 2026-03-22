@@ -7,9 +7,6 @@ import { Search, Navigation, Target, MapPin, X } from 'lucide-react';
 import { LOCAIS_ARACAJU } from '../constants/dadosMock';
 
 
-// Dados mockados de Aracaju
-
-
 export default function MapaCentro() {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
@@ -109,7 +106,7 @@ export default function MapaCentro() {
 
             className="absolute bottom-0 left-0 right-0 z-20"
           >
-            
+
           <div className="bg-[#FDF8F4] rounded-t-[32px] pt-8 pb-24 shadow-[0_-10px_40px_rgba(0,0,0,0.15)]">
             
             <div className="w-10 h-1.5 bg-zinc-300 rounded-full mx-auto mb-4" />
