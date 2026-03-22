@@ -29,6 +29,7 @@ export default function LandingPage() {
                     src={isCaju ? "/caju.png" : "/caranguejo.png"}
                     alt="ícone cultural"
                     fill
+                    sizes="(max-width: 768px) 96px, 128px"
                     className="object-contain p-1"
                   />
                 </motion.div>

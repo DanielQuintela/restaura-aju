@@ -126,6 +126,7 @@ export default function MapaCentro() {
                     src={local.image} 
                     alt={local.name} 
                     fill 
+                    sizes="160px"
                     className="object-cover" 
                   />
 
