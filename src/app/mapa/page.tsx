@@ -12,13 +12,20 @@ type SearchResult = {
   category: string;
   image: string;
   extra: string;
-  mapaIdx: number | null;
+  mapaIdx?: number;
+  address?: {
+    street: string;
+    number?: string;
+    city: string;
+    state: string;
+  };
 };
 
 export default function MapaCentro() {
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [customMapUrl, setCustomMapUrl] = useState<string | null>(null);
 
   const isSearching = searchTerm.trim().length > 0;
 
@@ -39,17 +46,14 @@ export default function MapaCentro() {
 
     const mapaNames = new Set(fromMapa.map(r => r.name.toLowerCase()));
 
-    const fromDescobrir: SearchResult[] = LOCAIS_DESCOBRIR
-      .filter(l => !mapaNames.has(l.nome.toLowerCase()))
-      .filter(l => l.nome.toLowerCase().includes(q) || l.tipo.toLowerCase().includes(q) || l.caracteristicas.toLowerCase().includes(q))
-      .map(l => ({
-        id: `desc-${l.id}`,
-        name: l.nome,
-        category: l.tipo,
-        image: l.img,
-        extra: `${l.dist} · ${l.nota} ★`,
-        mapaIdx: null,
-      }));
+   const fromDescobrir: SearchResult[] = LOCAIS_DESCOBRIR.map(l => ({
+  id: `desc-${l.id}`,
+  name: l.nome,
+  category: l.tipo,
+  image: l.img,
+  extra: `${l.dist} · ${l.nota} ★`,
+  mapaIdx: undefined,
+}));
 
     return [...fromMapa, ...fromDescobrir];
   }, [searchTerm, isSearching]);
@@ -62,12 +66,19 @@ export default function MapaCentro() {
   )}`;
 
   const handleSelectResult = (result: SearchResult) => {
-    if (result.mapaIdx !== null) {
-      setSelectedIdx(result.mapaIdx);
-    }
-    setSearchTerm("");
-    setShowSuggestions(true);
-  };
+  if (result.mapaIdx !== null && result.mapaIdx !== undefined) {
+    setSelectedIdx(result.mapaIdx);
+  } else if (result.address) {
+    const newUrl = `https://www.google.com/maps/embed/v1/place?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(
+      `${result.name}, ${result.address.street}, ${result.address.city}, ${result.address.state}`
+    )}`;
+    
+    setCustomMapUrl(newUrl); // 👈 novo estado
+  }
+
+  setSearchTerm("");
+  setShowSuggestions(true);
+};
 
   return (
     <div className="relative h-screen w-full bg-[#FDF8F4] overflow-hidden">
@@ -76,7 +87,7 @@ export default function MapaCentro() {
       <div className="absolute inset-0 z-0 pointer-events-auto">
         {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ? (
           <iframe 
-            src={googleMapsUrl} 
+          src={customMapUrl || googleMapsUrl}
             width="100%" 
             height="100%" 
             style={{ 
