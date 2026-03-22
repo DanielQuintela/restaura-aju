@@ -4,37 +4,110 @@ import { Typewriter } from "react-simple-typewriter";
 import Link from "next/link";
 import Image from "next/image";
 
-
 export default function LandingPage() {
+  const rows = Array.from({ length: 10 });
+  const cols = Array.from({ length: 6 });
+
   return (
-    <div className="relative w-full flex flex-col items-center min-h-screen bg-gray-200 overflow-hidden">
-      <div className="relative w-[95vw] mt-6 h-[80vh] rounded-[40px] overflow-hidden border border-white/10 shadow-2xl">
-        {/* <Image src="/centro.jpg" alt="Centro" fill className="object-cover brightness-50" /> */}
+    <div className="relative w-full min-h-screen bg-[#f2e9d9] overflow-hidden flex items-center justify-center">
+      
+      {/* --- CAMADA DE PADRONAGEM (Z-INDEX 0) --- */}
+      <div className="absolute inset-0 z-0 flex flex-col justify-around opacity-15 pointer-events-none mix-blend-multiply py-6">
+        {rows.map((_, rowIndex) => (
+          <div key={rowIndex} className="flex justify-around w-full px-2">
+            {cols.map((_, colIndex) => {
+              const isCaju = (rowIndex + colIndex) % 2 === 0;
+              return (
+                <motion.div 
+                  key={colIndex} 
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: (rowIndex + colIndex) * 0.03 }}
+                  className="relative w-24 h-24 md:w-32 md:h-32"
+                >
+                  <Image
+                    src={isCaju ? "/caju.png" : "/caranguejo.png"}
+                    alt="ícone cultural"
+                    fill
+                    className="object-contain p-1"
+                  />
+                </motion.div>
+              );
+            })}
+          </div>
+        ))}
       </div>
 
-      <main className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white px-6">
+      {/* --- CONTEÚDO PRINCIPAL (Z-INDEX 10) --- */}
+      {/* Fundo com transparência alta e desfoque suave para o texto saltar do fundo */}
+      <main className="relative z-10 flex flex-col items-center justify-center text-center px-6 w-[90%] max-w-md bg-[#f2e9d9]/20 backdrop-blur-md p-8 rounded-[40px] border border-white/30">
+        
         <motion.h1 
           initial={{ opacity: 0, y: -20 }} 
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl md:text-6xl font-black text-center mb-4"
+          className="text-4xl sm:text-5xl font-black mb-4 leading-tight tracking-tight text-[#51433a] drop-shadow-sm"
         >
-          <div>
-            <span className="text-gray-700">Conecta</span> <span className="text-amber-700">Centro</span>
-          </div>
-         
+          Conecta <span className="text-[#b45309]">Centro</span>
         </motion.h1>
-        
-        <div className="h-12 text-xl text-zinc-300 font-light">
-          <Typewriter words={["Não se perca.", "Ache os melhores picos.", "Explore o centro."]} loop={0} cursor />
+
+        <p className="text-[#51433a] text-lg mb-6 font-bold opacity-90">
+          O centro de Aracaju na sua mão.
+        </p>
+
+        <div className="h-12 text-lg text-[#51433a] font-extrabold">
+          <Typewriter
+            words={[
+              "Encontre lojas agora.",
+              "Ganhe pontos e descontos.",
+              "Valorize o comércio local.",
+              "Descubra Aracaju."
+            ]}
+            loop={0}
+            cursor
+            cursorColor="#b45309"
+            typeSpeed={60}
+            deleteSpeed={40}
+            delaySpeed={2000}
+          />
         </div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}>
+        {/* --- BOTÃO AJUSTADO (MENOR) --- */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ delay: 0.8 }}
+          className="w-full mt-8 max-w-[280px]" // Limitei a largura máxima para não esticar demais
+        >
           <Link href="/login">
-            <button className="mt-8 bg-white text-black px-10 py-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all">
-              Entrar no Mapa
-            </button>
+            <motion.button 
+              animate={{ 
+                x: [0, -8, 8, -8, 8, 0],
+                rotate: [0, -1, 1, -1, 1, 0]
+              }}
+              transition={{ 
+                duration: 0.5, 
+                repeat: Infinity, 
+                repeatDelay: 4,
+                ease: "easeInOut"
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              // py-4 e text-xl deixam o botão mais compacto e harmônico
+              className="relative overflow-hidden w-full bg-[#b45309] text-[#f2e9d9] py-4 rounded-[25px] font-black text-xl shadow-xl shadow-[#b45309]/40"
+            >
+              <motion.div
+                animate={{ x: ["-100%", "200%"] }}
+                transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 4, ease: "linear" }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-30deg]" 
+              />
+              <span className="relative z-10 uppercase tracking-wide">Entrar no Mapa</span>
+            </motion.button>
           </Link>
         </motion.div>
+
+        <footer className="mt-10 text-[10px] uppercase tracking-[0.4em] text-[#51433a]/60 font-black">
+          Aracaju • SE
+        </footer>
       </main>
     </div>
   );
