@@ -2,9 +2,30 @@ import { Map, Compass, Bookmark, User } from "lucide-react";
 import type { CinemaTicketOption, LocalDescobrir, NavItem } from "../types";
 
 export const STORES_MOCK = [
-  { id: 1, name: "Sneakers Retro", product: "Jordan 4 Blue", coords: "Rua Direita, 120", tags: ["Moda", "Jovem"] },
-  { id: 2, name: "Cyber Café", product: "Latte Especial", coords: "Praça da Sé, 45", tags: ["Café", "Wi-Fi"] },
-  { id: 3, name: "Game On", product: "Controle PS5", coords: "Rua 24 de Maio, 10", tags: ["Games", "Tech"] },
+  {
+    id: 1,
+    name: "Sneakers Retro",
+    product: "Jordan 4 Blue",
+    coords: "Rua João Pessoa, 120",
+    tags: ["Moda", "Jovem"],
+    address: { street: "Rua João Pessoa", number: "120", neighborhood: "Centro", city: "Aracaju", state: "SE" }
+  },
+  {
+    id: 2,
+    name: "Cyber Café",
+    product: "Latte Especial",
+    coords: "Praça General Valadão, 45",
+    tags: ["Café", "Wi-Fi"],
+    address: { street: "Praça General Valadão", number: "45", neighborhood: "Centro", city: "Aracaju", state: "SE" }
+  },
+  {
+    id: 3,
+    name: "Game On",
+    product: "Controle PS5",
+    coords: "Rua Laranjeiras, 10",
+    tags: ["Games", "Tech"],
+    address: { street: "Rua Laranjeiras", number: "10", neighborhood: "Centro", city: "Aracaju", state: "SE" }
+  },
 ];
 
 export const navItems: NavItem[] = [
@@ -59,7 +80,8 @@ export const LOCAIS_DESCOBRIR: LocalDescobrir[] = [
     nota: 4.9,
     dist: "150m",
     coords: { top: "35%", left: "50%" },
-    img: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=400"
+    img: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=400",
+    address: { street: "Av. Coelho e Campos", number: "s/n", neighborhood: "Centro", city: "Aracaju", state: "SE" }
   },
   {
     id: 2,
@@ -71,7 +93,8 @@ export const LOCAIS_DESCOBRIR: LocalDescobrir[] = [
     nota: 5.0,
     dist: "800m",
     coords: { top: "55%", left: "25%" },
-    img: "/museuSergipana.jpg"
+    img: "/museuSergipana.jpg",
+    address: { street: "Av. Ivo do Prado", number: "398", neighborhood: "Centro", city: "Aracaju", state: "SE" }
   },
   {
     id: 3,
@@ -83,7 +106,8 @@ export const LOCAIS_DESCOBRIR: LocalDescobrir[] = [
     nota: 4.7,
     dist: "160m",
     coords: { top: "25%", left: "40%" },
-    img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400"
+    img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400",
+    address: { street: "Rua Santo Amaro", number: "225", neighborhood: "Centro", city: "Aracaju", state: "SE" }
   },
   {
     id: 4,
@@ -95,7 +119,8 @@ export const LOCAIS_DESCOBRIR: LocalDescobrir[] = [
     nota: 4.5,
     dist: "100m",
     coords: { top: "45%", left: "60%" },
-    img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=400"
+    img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=400",
+    address: { street: "Rua João Pessoa", number: "s/n", neighborhood: "Centro", city: "Aracaju", state: "SE" }
   },
   {
     id: 5,
@@ -107,7 +132,8 @@ export const LOCAIS_DESCOBRIR: LocalDescobrir[] = [
     nota: 4.8,
     dist: "300m",
     coords: { top: "20%", left: "70%" },
-    img: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=400"
+    img: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?auto=format&fit=crop&w=400",
+    address: { street: "Rua Itabaianinha", number: "35", neighborhood: "Centro", city: "Aracaju", state: "SE" }
   }
 ];
 

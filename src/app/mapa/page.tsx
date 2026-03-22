@@ -41,13 +41,18 @@ export default function MapaCentro() {
 
     const fromDescobrir: SearchResult[] = LOCAIS_DESCOBRIR
       .filter(l => !mapaNames.has(l.nome.toLowerCase()))
-      .filter(l => l.nome.toLowerCase().includes(q) || l.tipo.toLowerCase().includes(q) || l.caracteristicas.toLowerCase().includes(q))
+      .filter(l =>
+        l.nome.toLowerCase().includes(q) ||
+        l.tipo.toLowerCase().includes(q) ||
+        l.caracteristicas.toLowerCase().includes(q) ||
+        l.address.street.toLowerCase().includes(q)
+      )
       .map(l => ({
         id: `desc-${l.id}`,
         name: l.nome,
         category: l.tipo,
         image: l.img,
-        extra: `${l.dist} · ${l.nota} ★`,
+        extra: `${l.address.street}, ${l.address.number} · ${l.nota} ★`,
         mapaIdx: null,
       }));
 
