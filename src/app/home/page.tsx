@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import MapaCentro from '../mapa/page';
 import BottomNav from '../components/bottonNav';
 import ExplorePage from '../descobrir/page';
+import ProfilePage from '../perfil/page';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('mapa');
@@ -18,7 +19,7 @@ export default function Home() {
       case 'salvos':
         return <div>Salvos</div>;
       case 'perfil':
-        return <div>Perfil</div>;
+        return <ProfilePage />;
       default:
         return <MapaCentro />;
     }
