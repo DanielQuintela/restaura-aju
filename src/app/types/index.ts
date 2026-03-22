@@ -14,7 +14,7 @@ export interface LocalDescobrir {
 }
 
 export interface Coupon {
-  id: number;
+  id: string;
   title: string;
   discount: string;
   redeemed: boolean;
