@@ -5,6 +5,9 @@ import MapaCentro from '../mapa/page';
 import BottomNav from '../components/bottonNav';
 import ExplorePage from '../descobrir/page';
 import ProfilePage from '../perfil/page';
+import SalvosPage from '../salvos/page';
+import { AppProvider } from '../context/AppContext';
+import Toast from '../components/Toast';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('mapa');
@@ -14,10 +17,9 @@ export default function Home() {
       case 'mapa':
         return <MapaCentro />;
       case 'descobrir':
-        return <ExplorePage/>;
-
+        return <ExplorePage />;
       case 'salvos':
-        return <div>Salvos</div>;
+        return <SalvosPage />;
       case 'perfil':
         return <ProfilePage />;
       default:
@@ -26,13 +28,14 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <AppProvider>
+      <Toast />
       {renderScreen()}
 
       <BottomNav 
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
-    </div>
+    </AppProvider>
   );
 }

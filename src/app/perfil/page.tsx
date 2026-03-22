@@ -1,13 +1,12 @@
 "use client";
 import { motion } from "framer-motion";
-import { MapPin, Trophy, Pencil, Bell, ShieldCheck, HelpCircle, LogOut, ChevronRight } from "lucide-react";
+import { MapPin, Trophy, Pencil, Bell, ShieldCheck, HelpCircle, LogOut, ChevronRight, Ticket, Gift } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useApp } from "../context/AppContext";
 
 const PROFILE_DATA = {
   name: "João Silva",
   avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Daniel",
-  visitedPlaces: 12,
-  points: 340,
 };
 
 const SETTINGS_ITEMS = [
@@ -19,6 +18,7 @@ const SETTINGS_ITEMS = [
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { points, visitedPlaceIds, coupons, redeemCoupon } = useApp();
 
   return (
     <div className="min-h-screen bg-[#f2e9d9] text-[#51433a] pb-32 font-sans">
@@ -49,21 +49,59 @@ export default function ProfilePage() {
       >
         <div className="flex-1 bg-white/80 rounded-[24px] p-5 border border-white shadow-md flex flex-col items-center gap-2">
           <MapPin size={22} className="text-[#b45309]" />
-          <span className="text-2xl font-black">{PROFILE_DATA.visitedPlaces}</span>
+          <span className="text-2xl font-black">{visitedPlaceIds.length}</span>
           <span className="text-[9px] font-black uppercase tracking-widest opacity-50">Locais visitados</span>
         </div>
         <div className="flex-1 bg-white/80 rounded-[24px] p-5 border border-white shadow-md flex flex-col items-center gap-2">
           <Trophy size={22} className="text-[#b45309]" />
-          <span className="text-2xl font-black">{PROFILE_DATA.points}</span>
+          <span className="text-2xl font-black">{points}</span>
           <span className="text-[9px] font-black uppercase tracking-widest opacity-50">Pontos acumulados</span>
         </div>
+      </motion.div>
+
+      {/* RECOMPENSAS */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+        className="px-6 mt-8"
+      >
+        <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3">Recompensas</p>
+
+        {coupons.length > 0 ? (
+          <div className="space-y-3">
+            {coupons.map((coupon) => (
+              <div key={coupon.id} className="bg-white/80 rounded-[20px] p-4 border border-white shadow-md flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${coupon.redeemed ? "bg-gray-100" : "bg-[#b45309]/10"}`}>
+                  <Ticket size={22} className={coupon.redeemed ? "text-gray-400" : "text-[#b45309]"} />
+                </div>
+                <div className="flex-1">
+                  <p className={`text-sm font-bold ${coupon.redeemed ? "line-through opacity-40" : ""}`}>{coupon.title}</p>
+                  <p className="text-[10px] font-black uppercase tracking-wider opacity-40">{coupon.discount} de desconto</p>
+                </div>
+                {!coupon.redeemed && (
+                  <button onClick={() => redeemCoupon(coupon.id)} className="bg-[#b45309] text-white text-[10px] font-black uppercase px-3 py-2 rounded-xl active:scale-95 transition-all">
+                    Resgatar
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white/80 rounded-[24px] p-8 border border-white shadow-md flex flex-col items-center gap-3">
+            <Gift size={32} className="text-[#51433a]/15" />
+            <p className="text-[10px] font-black uppercase tracking-widest opacity-30 text-center">
+              Faça check-in nos locais{"\n"}para desbloquear cupons
+            </p>
+          </div>
+        )}
       </motion.div>
 
       {/* CONFIGURAÇÕES */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.25 }}
         className="px-6 mt-8"
       >
         <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-3">Configurações</p>
@@ -86,7 +124,7 @@ export default function ProfilePage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
+        transition={{ delay: 0.35 }}
         className="px-6 mt-4"
       >
         <button

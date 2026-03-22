@@ -1,4 +1,4 @@
 export interface Navbar {
-    activeTab   : any,
-    setActiveTab: any
+    activeTab: string;
+    setActiveTab: (tab: string) => void;
 }

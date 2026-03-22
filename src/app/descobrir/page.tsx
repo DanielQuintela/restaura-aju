@@ -1,86 +1,31 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, MapPin, Star, Clock, X, Info, Navigation, Utensils, ShoppingBag, Landmark, Heart } from "lucide-react";
+import { Search, MapPin, Star, Clock, X, Info, Utensils, ShoppingBag, Landmark, CheckCircle } from "lucide-react";
 import { useState, useMemo } from "react";
+import { useApp } from "../context/AppContext";
+import { LOCAIS_DESCOBRIR } from "../constants/dadosMock";
 
 export default function ExplorePage() {
-  const [view, setView] = useState("explore"); // 'explore' ou 'map'
+  const { favorites, toggleFavorite, checkIn, visitedPlaceIds } = useApp();
+  const [view, setView] = useState("explore");
   const [activeTab, setActiveTab] = useState("Tudo");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPlace, setSelectedPlace] = useState<typeof todosLocais[0] | null>(null);
-  const [favorites, setFavorites] = useState([1]);
+  const [selectedPlace, setSelectedPlace] = useState<typeof LOCAIS_DESCOBRIR[0] | null>(null);
 
-  const todosLocais = [
-    { 
-      id: 1, 
-      nome: "Mercado Thales Ferraz", 
-      tipo: "Cultura", 
-      status: "Aberto",
-      horario: "06h às 17h",
-      caracteristicas: "Artesanato, queijos e a famosa Passarela das Flores.",
-      nota: 4.9, 
-      dist: "150m",
-      coords: { top: "35%", left: "50%" },
-      img: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?auto=format&fit=crop&w=400"
-    },
-    { 
-      id: 2, 
-      nome: "Museu da Gente Sergipana", 
-      tipo: "Cultura", 
-      status: "Aberto",
-      horario: "10h às 16h",
-      caracteristicas: "Experiência tecnológica sobre a identidade de Sergipe.",
-      nota: 5.0, 
-      dist: "800m",
-      coords: { top: "55%", left: "25%" },
-      img: "/museuSergipana.jpg"
-    },
-    { 
-      id: 4, 
-      nome: "Restaurante Caçarola", 
-      tipo: "Gastronomia", 
-      status: "Aberto",
-      horario: "11h às 16h",
-      caracteristicas: "Famoso pelo Camarão na Moringa e vista do rio.",
-      nota: 4.7, 
-      dist: "160m",
-      coords: { top: "25%", left: "40%" },
-      img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400"
-    },
-    { 
-      id: 5, 
-      nome: "Lojas do Calçadão", 
-      tipo: "Lojas", 
-      status: "Aberto",
-      horario: "08h às 18h",
-      caracteristicas: "O coração do comércio popular de Aracaju.",
-      nota: 4.5, 
-      dist: "100m",
-      coords: { top: "45%", left: "60%" },
-      img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=400"
-    }
-  ];
-
-  // FILTRO MESTRE: Busca + Categoria + Lógica de Favoritos
   const locaisFiltrados = useMemo(() => {
-    return todosLocais.filter(local => {
+    return LOCAIS_DESCOBRIR.filter(local => {
       const matchesSearch = local.nome.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      // Se a aba ativa for 'Favoritos', filtra pelo array de favoritos
       if (activeTab === "Favoritos") {
         return matchesSearch && favorites.includes(local.id);
       }
-      
       const matchesTab = activeTab === "Tudo" || local.tipo === activeTab;
       return matchesSearch && matchesTab;
     });
   }, [searchQuery, activeTab, favorites]);
 
-  const toggleFavorite = (id: number, e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleToggleFavorite = (id: number, e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    setFavorites(prev => 
-      prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]
-    );
+    toggleFavorite(id);
   };
 
   // CATEGORIAS: Adicionada a categoria "Favoritos" com ícone de Estrela
@@ -164,7 +109,7 @@ export default function ExplorePage() {
                 </div>
                 {/* ÍCONE DE FAVORITAR NO CARD */}
                 <button 
-                  onClick={(e) => toggleFavorite(local.id, e)}
+                  onClick={(e) => handleToggleFavorite(local.id, e)}
                   className="absolute top-4 right-4 p-2 transition-transform active:scale-125"
                 >
                   <Star 
@@ -213,9 +158,20 @@ export default function ExplorePage() {
                   <div className="flex gap-3"><Clock className="text-[#b45309]" size={18}/> <div><p className="text-[10px] font-black uppercase opacity-40">Aberto das</p><p className="text-sm font-bold">{selectedPlace.horario}</p></div></div>
                   <div className="flex gap-3"><Info className="text-[#b45309]" size={18}/> <div><p className="text-[10px] font-black uppercase opacity-40">Sobre</p><p className="text-sm font-semibold opacity-80">{selectedPlace.caracteristicas}</p></div></div>
                 </div>
-                <button className="w-full bg-[#b45309] text-white py-4 rounded-2xl font-black mt-8 flex items-center justify-center gap-2">
-                   COMO CHEGAR
-                </button>
+                <div className="flex gap-3 mt-8">
+                  {visitedPlaceIds.includes(selectedPlace.id) ? (
+                    <div className="flex-1 bg-green-600/10 text-green-700 py-4 rounded-2xl font-black flex items-center justify-center gap-2 border-2 border-green-600/20">
+                      <CheckCircle size={18} /> VISITADO
+                    </div>
+                  ) : (
+                    <button onClick={() => { checkIn(selectedPlace.id); setSelectedPlace(null); }} className="flex-1 bg-[#51433a] text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2 active:scale-95 transition-all">
+                      <CheckCircle size={18} /> CHECK-IN
+                    </button>
+                  )}
+                  <button className="flex-1 bg-[#b45309] text-white py-4 rounded-2xl font-black flex items-center justify-center gap-2">
+                    COMO CHEGAR
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>
