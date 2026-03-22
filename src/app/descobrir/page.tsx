@@ -7,7 +7,7 @@ export default function ExplorePage() {
   const [view, setView] = useState("explore"); // 'explore', 'map', 'favorites'
   const [activeTab, setActiveTab] = useState("Tudo");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [selectedPlace, setSelectedPlace] = useState<typeof todosLocais[0] | null>(null);
   const [favorites, setFavorites] = useState([1]);
 
   const todosLocais = [
@@ -71,7 +71,7 @@ export default function ExplorePage() {
     });
   }, [searchQuery, activeTab, view, favorites]);
 
-  const toggleFavorite = (id, e) => {
+  const toggleFavorite = (id: number, e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     setFavorites(prev => prev.includes(id) ? prev.filter(f => f !== id) : [...prev, id]);
   };
