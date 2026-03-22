@@ -90,15 +90,27 @@ export default function MapaCentro() {
       </div>
 
       {/* CARROSSEL */}
-     <AnimatePresence>
-      {!isSearching &&  showSuggestions && (
-        <motion.div
-          initial={{ y: 120, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 120, opacity: 0 }}
-          className="absolute bottom-0 left-0 right-0 z-20"
-        >
-          <div className="bg-[#FDF8F4] rounded-t-[32px] pt-8 pb-30 shadow-[0_-10px_40px_rgba(0,0,0,0.15)]">
+      <AnimatePresence>
+        {!isSearching && showSuggestions && (
+          <motion.div
+            initial={{ y: 120, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 120, opacity: 0 }}
+            
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.2}
+
+            onDragEnd={(event, info) => {
+              if (info.offset.y > 100) {
+                setShowSuggestions(false);
+              }
+            }}
+
+            className="absolute bottom-0 left-0 right-0 z-20"
+          >
+            
+          <div className="bg-[#FDF8F4] rounded-t-[32px] pt-8 pb-24 shadow-[0_-10px_40px_rgba(0,0,0,0.15)]">
             
             <div className="w-10 h-1.5 bg-zinc-300 rounded-full mx-auto mb-4" />
             {/* Header */}
@@ -113,7 +125,7 @@ export default function MapaCentro() {
             </div>
             <button
               onClick={() => setShowSuggestions(false)}
-              className="absolute -top-5 right-6 w-9 h-9 flex items-center justify-center rounded-full bg-[#b45309] text-[#6b350b] active:scale-90 transition"
+              className="absolute -top-5 right-6 w-9 h-9 flex items-center justify-center rounded-full bg-[#b45309] text-[#6b350b] active:scale-80 transition"
             >
               <X size={18} />
             </button>
@@ -126,7 +138,7 @@ export default function MapaCentro() {
                   key={index}
                   onClick={() => setSelectedIdx(index)}
                   whileTap={{ scale: 0.95 }}
-                  className={`relative flex-shrink-0 w-40 h-60 rounded-[28px] overflow-hidden cursor-pointer transition-all duration-300 shadow-xl ${
+                  className={`relative flex-shrink-0 w-40 h-60  rounded-[28px] overflow-hidden cursor-pointer transition-all duration-300 shadow-xl ${
                     selectedIdx === index
                       ? 'ring-4 ring-white scale-105 z-30'
                       : 'opacity-100 grayscale-[0.3]'
