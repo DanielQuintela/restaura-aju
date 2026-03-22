@@ -4,16 +4,32 @@ import React, { useState } from 'react'
 import MapaCentro from '../mapa/page';
 import BottomNav from '../components/bottonNav';
 
-
 export default function Home() {
-  
+  const [activeTab, setActiveTab] = useState('mapa');
+
+  const renderScreen = () => {
+    switch (activeTab) {
+      case 'mapa':
+        return <MapaCentro />;
+      case 'descobrir':
+        return <div>Descobrir</div>;
+      case 'salvos':
+        return <div>Salvos</div>;
+      case 'perfil':
+        return <div>Perfil</div>;
+      default:
+        return <MapaCentro />;
+    }
+  };
 
   return (
-   <div>
-    <MapaCentro/>
+    <div>
+      {renderScreen()}
 
-    
-    <BottomNav />
-   </div>
+      <BottomNav 
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
+    </div>
   );
 }
