@@ -29,16 +29,26 @@ export default function MapaCentro() {
       
       {/* MAPA */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <iframe 
-          src={googleMapsUrl} 
-          width="100%" 
-          height="100%" 
-          style={{ 
-            border: 0,
-            filter: 'brightness(0.9) contrast(1.2) saturate(1.2)'
-          }} 
-          loading="eager"
-        />
+        {process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ? (
+          <iframe 
+            src={googleMapsUrl} 
+            width="100%" 
+            height="100%" 
+            style={{ 
+              border: 0,
+              filter: 'brightness(0.9) contrast(1.2) saturate(1.2)'
+            }} 
+            loading="eager"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-b from-[#e8dcc8] to-[#d4c4a8] flex items-center justify-center">
+            <div className="text-center">
+              <MapPin size={48} className="text-[#b45309]/30 mx-auto mb-3" />
+              <p className="text-[#51433a]/40 font-black text-sm uppercase tracking-widest">Centro de Aracaju</p>
+              <p className="text-[#51433a]/25 text-xs font-bold mt-1">Modo demonstração</p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* BUSCA */}
