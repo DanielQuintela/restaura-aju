@@ -39,8 +39,8 @@ export default function LandingPage() {
       </div>
 
       {/* --- CONTEÚDO PRINCIPAL (Z-INDEX 10) --- */}
-      {/* ALTERAÇÃO AQUI: Baixei para /30 para ficar BEM transparente e aumentei o Blur */}
-      <main className="relative z-10 flex flex-col items-center justify-center text-center px-6 w-[92%] max-w-lg bg-[#f2e9d9]/30 backdrop-blur-xl p-10 rounded-[50px] shadow-2xl shadow-[#51433a]/10 border border-white/40">
+      {/* Fundo com transparência alta e desfoque suave para o texto saltar do fundo */}
+      <main className="relative z-10 flex flex-col items-center justify-center text-center px-6 w-[90%] max-w-md bg-[#f2e9d9]/20 backdrop-blur-md p-8 rounded-[40px] border border-white/30">
         
         <motion.h1 
           initial={{ opacity: 0, y: -20 }} 
@@ -71,17 +71,17 @@ export default function LandingPage() {
           />
         </div>
 
-        {/* BOTÃO TREMENDO E BRILHANDO */}
+        {/* --- BOTÃO AJUSTADO (MENOR) --- */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: 0.8 }}
-          className="w-full mt-10"
+          className="w-full mt-8 max-w-[280px]" // Limitei a largura máxima para não esticar demais
         >
           <Link href="/login">
             <motion.button 
               animate={{ 
-                x: [0, -10, 10, -10, 10, 0],
+                x: [0, -8, 8, -8, 8, 0],
                 rotate: [0, -1, 1, -1, 1, 0]
               }}
               transition={{ 
@@ -92,19 +92,20 @@ export default function LandingPage() {
               }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="relative overflow-hidden w-full bg-[#b45309] text-[#f2e9d9] py-6 rounded-[30px] font-black text-2xl shadow-2xl shadow-[#b45309]/50"
+              // py-4 e text-xl deixam o botão mais compacto e harmônico
+              className="relative overflow-hidden w-full bg-[#b45309] text-[#f2e9d9] py-4 rounded-[25px] font-black text-xl shadow-xl shadow-[#b45309]/40"
             >
               <motion.div
                 animate={{ x: ["-100%", "200%"] }}
                 transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 4, ease: "linear" }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[-30deg]" 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-30deg]" 
               />
-              <span className="relative z-10 uppercase tracking-wider">Entrar no Mapa</span>
+              <span className="relative z-10 uppercase tracking-wide">Entrar no Mapa</span>
             </motion.button>
           </Link>
         </motion.div>
 
-        <footer className="mt-12 text-[12px] uppercase tracking-[0.4em] text-[#51433a]/60 font-black">
+        <footer className="mt-10 text-[10px] uppercase tracking-[0.4em] text-[#51433a]/60 font-black">
           Aracaju • SE
         </footer>
       </main>
